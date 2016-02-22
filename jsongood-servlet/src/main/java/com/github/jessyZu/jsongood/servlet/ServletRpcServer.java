@@ -104,7 +104,11 @@ public class ServletRpcServer {
             throws IOException {
 
         resp.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json");
+        if (context.isJSONPRequest()) {
+            resp.setContentType("application/javascript");
+        } else {
+            resp.setContentType("application/json");
+        }
         if (rpcRequestEncoder == null) {
             rpcRequestEncoder = new RpcRequestJSONEncoder();
         }

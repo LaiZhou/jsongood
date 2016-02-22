@@ -52,16 +52,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.ResolvableType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jessyZu.jsongood.util.ClassGenerator;
 
-
 public class LocalBeanServiceInvoker implements RpcInvoker, ApplicationContextAware {
     private static final Logger logger = LoggerFactory.getLogger(LocalBeanServiceInvoker.class);
 
-    private ApplicationContext applicationContext;
-    private Validator          validator;
+    private ApplicationContext  applicationContext;
+    private Validator           validator;
 
     /**
      * @param applicationContext the applicationContext to set
@@ -79,7 +79,7 @@ public class LocalBeanServiceInvoker implements RpcInvoker, ApplicationContextAw
     private final ConcurrentMap<String, Class<?>> Clazz_CACHE             = new ConcurrentHashMap<String, Class<?>>();
     private final ConcurrentMap<String, Method>   Signature_METHODS_CACHE = new ConcurrentHashMap<String, Method>();
 
-
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void invoke(RpcContext rpcContext, RpcResult rpcResult) {
         if (validator == null) {
@@ -112,6 +112,30 @@ public class LocalBeanServiceInvoker implements RpcInvoker, ApplicationContextAw
                     convertedParams[i] = objectMapper.readValue(rpcContext.getParameters().get(i), parameterTypes[i]);
                     rpcContext.getParameterTypes().add(parameterTypes[i]);
 
+                    //resolve element type of collecttion parameter from map
+                    if (Collection.class.isAssignableFrom(parameterTypes[i])) {
+                        if (convertedParams[i] != null) {
+                            Collection<?> collection = (Collection<?>) convertedParams[i];
+                            Collection newCollection = (Collection) convertedParams[i].getClass()
+                                    .newInstance();
+                            if (collection.size() > 0) {
+                                for (Object elementObject : collection) {
+                                    if (elementObject != null && elementObject instanceof Map) {
+                                        ResolvableType type = ResolvableType.forMethodParameter(m, i);
+                                        if (type.getGenerics().length == 1) {
+                                            Class<?> elementClass = type.getGeneric(0).getRawClass();
+                                            String jsonValue = objectMapper.writeValueAsString(elementObject);
+                                            Object elementClassInstance = objectMapper.readValue(jsonValue,
+                                                    elementClass);
+                                            newCollection.add(elementClassInstance);
+                                        }
+                                    }
+                                }
+                                convertedParams[i] = newCollection;
+                            }
+                        }
+
+                    }
                 }
                 validate(clazz, m.getName(), parameterTypes, convertedParams);
 

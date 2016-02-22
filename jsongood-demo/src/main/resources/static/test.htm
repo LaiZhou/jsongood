@@ -4,67 +4,85 @@
 
 </head>
 <body>
-<button id='jsonp'>jsonp invoke</button>
-<br/><br/><br/>
+	<button id='jsonp'>jsonp invoke</button>
+	<br />
+	<br />
+	<br />
 
-<button id='json'>json invoke</button>
+	<button id='json'>json invoke</button>
 
-<script src="zepto.min.js"></script>
-<script>
+	<script src="zepto.min.js"></script>
+	<script>
+		var param0 = {
+			'intParam' : 0,
+			'stringParam' : 'hello0'
+		};
 
-	var param = {'intParam':1,'stringParam':'hello'};
-    $('#jsonp').on('click', function (e) {
-        $.ajaxJSONP({
+		var param = {
+			'intParam' : 1,
+			'stringParam' : 'hello',
+			'param':param0
+		};
+		$('#jsonp')
+				.on(
+						'click',
+						function(e) {
+							$
+									.ajaxJSONP({
 
-            url: 'http://localhost:8080/api?callback=?',
-            data: {
-                'content': JSON.stringify({
-                    methodEndPoint: 'com.github.jessyZu.jsongood.demo.api.DemoService:sayHello1:1.0.0',
-                    parameters: [param,param]
-                })
-            },
+										url : 'http://localhost:8080/api?callback=?',
+										data : {
+											'content' : JSON
+													.stringify({
+														methodEndPoint : 'com.github.jessyZu.jsongood.demo.api.DemoService:sayHello1:1.0.0',
+														parameters : [ param,
+																param,
+																[ param, null ] ]
+													})
+										},
 
-            success: function (data) {
-                alert(JSON.stringify(data));
-                console.log(data);
-            },
-            error: function (xhr, type) {
-                alert('Ajax error!')
-            }
-        });
+										success : function(data) {
+											alert(JSON.stringify(data));
+											console.log(data);
+										},
+										error : function(xhr, type) {
+											alert('Ajax error!')
+										}
+									});
 
-    });
+						});
 
+		$('#json')
+				.on(
+						'click',
+						function(e) {
+							$
+									.ajax({
+										type : 'POST',
+										url : '/api',
+										data : JSON
+												.stringify({
+													methodEndPoint : 'com.github.jessyZu.jsongood.demo.api.DemoService:sayHello2:1.0.0',
+													parameters : [ "123",
+															"1234" ]
+												}),
 
-    $('#json').on('click', function (e) {
-        $.ajax({
-            type: 'POST',
-            url: '/api',
-            data: JSON.stringify({
-                methodEndPoint: 'com.github.jessyZu.jsongood.demo.api.DemoService:sayHello2:1.0.0',
-                parameters: ["123","1234"]
-            }),
+										contentType : 'application/json; charset=utf-8',
+										dataType : 'json',
+										timeout : 300,
+										success : function(data) {
+											alert(JSON.stringify(data));
+											console.log(data);
+										}
 
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            timeout: 300,
-            success: function (data) {
-                alert(JSON.stringify(data));
-                console.log(data);
-            }
+										,
+										error : function(xhr, type) {
+											alert('Ajax error!')
+										}
+									})
 
-            ,
-            error: function (xhr, type) {
-                alert('Ajax error!')
-            }
-        })
-
-    })
-    ;
-
-
-
-</script>
+						});
+	</script>
 
 </body>
 </html>

@@ -42,15 +42,15 @@
 	<modules>
 		<module>jsongood-core</module>
 		<module>jsongood-servlet</module>
-		<module>jsongood-asyncservlet</module>
 		<module>jsongood-dubbo</module>
-		<!--demo <module>jsongood-demo</module> -->
+		<!--demo  -->
+		<module>jsongood-demo</module>
 
 	</modules>
 
 	<properties>
 		<junit.version>4.11</junit.version>
-		<spring.version>4.0.5.RELEASE</spring.version>
+		<spring.version>4.2.3.RELEASE</spring.version>
 		<slf4j.version>1.7.7</slf4j.version>
 		<logback.version>1.1.2</logback.version>
 		<jackson.version>2.4.0</jackson.version>
