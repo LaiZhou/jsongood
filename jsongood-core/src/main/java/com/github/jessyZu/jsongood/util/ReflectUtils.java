@@ -29,8 +29,6 @@ import javassist.CtConstructor;
 import javassist.CtMethod;
 import javassist.NotFoundException;
 
-import org.apache.commons.lang3.StringUtils;
-
 /**
  * ReflectUtils
  * 

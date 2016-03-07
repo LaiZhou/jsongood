@@ -12,7 +12,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +24,7 @@ import com.github.jessyZu.jsongood.core.RpcRequestJSONEncoder;
 import com.github.jessyZu.jsongood.core.RpcResult;
 import com.github.jessyZu.jsongood.core.RpcResultCodeEnum;
 import com.github.jessyZu.jsongood.core.RpcServiceHandler;
+import com.github.jessyZu.jsongood.servlet.util.IOUtils;
 
 
 public class ServletRpcServer {

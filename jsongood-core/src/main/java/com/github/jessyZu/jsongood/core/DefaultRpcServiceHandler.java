@@ -5,13 +5,13 @@ package com.github.jessyZu.jsongood.core;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.github.jessyZu.jsongood.util.StringUtils;
 
 public class DefaultRpcServiceHandler implements RpcServiceHandler {
     private final Logger logger = LoggerFactory.getLogger(DefaultRpcServiceHandler.class);
@@ -74,7 +74,7 @@ public class DefaultRpcServiceHandler implements RpcServiceHandler {
             context.setServiceVersion(splitMethodEndPoint[2]);
         }
 
-        if (StringUtils.isNoneBlank(context.getRpcRequest().getParameters())
+        if (StringUtils.isNotBlank(context.getRpcRequest().getParameters())
                 && (rpcInvoker instanceof LocalBeanServiceInvoker)) {
             if (objectMapper == null) {
                 objectMapper = new ObjectMapper();

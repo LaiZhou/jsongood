@@ -13,6 +13,7 @@ public class RpcRequest implements Serializable {
     private String              methodEndPoint;                         // 类名:方法名:服务版本号
     private String              parameters;
     private Map<String, String> attachments;
+    private String              requestId;
 
     public String getMethodEndPoint() {
         return methodEndPoint;
@@ -38,11 +39,21 @@ public class RpcRequest implements Serializable {
         this.attachments = attachments;
     }
 
+    public String getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(String requestId) {
+        this.requestId = requestId;
+    }
+
     @Override
     public String toString() {
         return "RpcRequest [" + (methodEndPoint != null ? "methodEndPoint=" + methodEndPoint + ", " : "")
                 + (parameters != null ? "parameters=" + parameters + ", " : "")
-                + (attachments != null ? "attachments=" + attachments : "") + "]";
+                + (attachments != null ? "attachments=" + attachments + ", " : "")
+                + (requestId != null ? "requestId=" + requestId : "") + "]";
     }
+
 
 }

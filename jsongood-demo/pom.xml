@@ -25,16 +25,20 @@
 		<!-- jsongood -->
 		<dependency>
 			<groupId>com.github.jessyZu</groupId>
+			<artifactId>jsongood-servlet</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-context</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.jessyZu</groupId>
 			<artifactId>jsongood-dubbo</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.github.jessyZu</groupId>
-			<artifactId>jsongood-asyncservlet</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.github.jessyZu</groupId>
-			<artifactId>jsongood-servlet</artifactId>
-		</dependency>
+
 
 		<!-- spring boot -->
 		<dependency>
@@ -58,17 +62,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- jsongood -->
-		<dependency>
-			<groupId>com.github.jessyZu</groupId>
-			<artifactId>jsongood-core</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>spring-context</artifactId>
-					<groupId>org.springframework</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+
 
 
 	</dependencies>
