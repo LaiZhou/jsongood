@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.jessyZu</groupId>
 	<artifactId>jsongood-parent</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>1.0.1</version>
 	<packaging>pom</packaging>
 
 	<!-- oss -->
@@ -43,8 +43,8 @@
 		<module>jsongood-core</module>
 		<module>jsongood-servlet</module>
 		<module>jsongood-dubbo</module>
-		<!--demo  -->
-		<module>jsongood-demo</module>
+		<!--demo 
+		<module>jsongood-demo</module> -->
 
 	</modules>
 
