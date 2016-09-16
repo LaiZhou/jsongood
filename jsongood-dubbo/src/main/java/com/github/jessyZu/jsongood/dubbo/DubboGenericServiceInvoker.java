@@ -1,94 +1,114 @@
 /**
- * 
+ *
  */
 package com.github.jessyZu.jsongood.dubbo;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.alibaba.dubbo.config.ApplicationConfig;
 import com.alibaba.dubbo.config.ReferenceConfig;
 import com.alibaba.dubbo.config.RegistryConfig;
+import com.alibaba.dubbo.registry.RegistryService;
 import com.alibaba.dubbo.rpc.service.GenericService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jessyZu.jsongood.core.RpcContext;
 import com.github.jessyZu.jsongood.core.RpcInvoker;
 import com.github.jessyZu.jsongood.core.RpcResult;
 import com.github.jessyZu.jsongood.core.RpcResultCodeEnum;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
-public class DubboGenericServiceInvoker implements RpcInvoker {
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
-	private final Logger logger = LoggerFactory
-			.getLogger(DubboGenericServiceInvoker.class);
+public class DubboGenericServiceInvoker implements RpcInvoker, InitializingBean {
 
-	private ApplicationConfig application;
-	private List<RegistryConfig> registryList;
+    private final Logger logger = LoggerFactory
+            .getLogger(DubboGenericServiceInvoker.class);
 
-	private ObjectMapper objectMapper;
+    private ApplicationConfig application;
+    private List<RegistryConfig> registryList;
 
-	private ConcurrentHashMap<String, ReferenceConfig<GenericService>> REFERENCECONFIG_CACHE = new ConcurrentHashMap<String, ReferenceConfig<GenericService>>();
+    private ObjectMapper objectMapper;
 
-	public void setObjectMapper(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
+    private ConcurrentHashMap<String, ReferenceConfig<GenericService>> REFERENCECONFIG_CACHE = new ConcurrentHashMap<String, ReferenceConfig<GenericService>>();
 
-	public void setApplication(ApplicationConfig application) {
-		this.application = application;
-	}
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
-	public void setRegistryList(List<RegistryConfig> registryList) {
-		this.registryList = registryList;
-	}
+    public void setApplication(ApplicationConfig application) {
+        this.application = application;
+    }
 
-	@Override
+    public void setRegistryList(List<RegistryConfig> registryList) {
+        this.registryList = registryList;
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        connectRegistry();
+    }
+
+    public void connectRegistry() {
+        Long s = System.currentTimeMillis();
+        ReferenceConfig<RegistryService> reference = new ReferenceConfig<RegistryService>();
+        reference.setApplication(application);
+        reference.setRegistries(registryList); // 多个注册中心可以用setRegistries()
+        reference.setInterface(RegistryService.class); // 弱类型接口名
+        reference.setRetries(0);
+        reference.setTimeout(5000);
+        RegistryService registryService = reference.get();
+        Long t = System.currentTimeMillis() - s;
+        logger.info("connectRegistry success ,spend time=" + t + "ms");
+
+    }
+
+    @Override
     public void invoke(RpcContext rpcContext, RpcResult rpcResult) {
-        System.out.println(new Date());
 
-		try {
-			String referenceCacheKey = new StringBuilder()
-					.append(rpcContext.getClassName()).append("-")
-					.append(rpcContext.getServiceVersion()).toString();
-			ReferenceConfig<GenericService> reference = REFERENCECONFIG_CACHE
-					.get(referenceCacheKey);
-			if (reference == null) {
-				// 获取泛化引用
-				reference = new ReferenceConfig<GenericService>();
-				reference.setApplication(application);
-				reference.setRegistries(registryList); // 多个注册中心可以用setRegistries()
-				reference.setGeneric(true); // 声明为泛化接口
-				reference.setInterface(rpcContext.getClassName()); // 弱类型接口名
-				reference.setVersion(rpcContext.getServiceVersion());
-			}
+        try {
+            String referenceCacheKey = new StringBuilder()
+                    .append(rpcContext.getClassName()).append("-")
+                    .append(rpcContext.getServiceVersion()).toString();
+            ReferenceConfig<GenericService> reference = REFERENCECONFIG_CACHE
+                    .get(referenceCacheKey);
+            if (reference == null) {
+                // 获取泛化引用
+                reference = new ReferenceConfig<GenericService>();
+            }
+            reference.setApplication(application);
+            reference.setRegistries(registryList); // 多个注册中心可以用setRegistries()
+            reference.setGeneric(true); // 声明为泛化接口
+            reference.setInterface(rpcContext.getClassName()); // 弱类型接口名
+            reference.setVersion(rpcContext.getServiceVersion());
             reference.setRetries(0);
+            Long s = System.currentTimeMillis();
             GenericService genericService = reference.get(); // 用com.alibaba.dubbo.rpc.service.GenericService可以替代所有接口引用
-			if (genericService == null) {
-				rpcResult
-						.setWithRpcResultCodeEnum(RpcResultCodeEnum.SERVICE_BEAN_NOT_FOUND_ERROR);
-			} else {
-				// 缓存dubbo reference
-				REFERENCECONFIG_CACHE.put(referenceCacheKey, reference);
-				if (objectMapper == null) {
-					objectMapper = new ObjectMapper();
+            Long t = System.currentTimeMillis() - s;
 
-				}
-				List<?> parameters = objectMapper.readValue(rpcContext
-						.getRpcRequest().getParameters(), ArrayList.class);
-				// 基本类型以及Date,List,Map等不需要转换，直接调用
-				Object result = genericService.$invoke(
-						rpcContext.getMethodName(), null, parameters.toArray());
-				rpcResult
-						.setWithRpcResultCodeEnum(RpcResultCodeEnum.SUCCESS);
-				rpcResult.setData(result);
-			}
+            logger.info("reference.get() success ,spend time=" + t + "ms"+","+rpcContext);
 
-		} catch (Exception e) {
+            if (genericService == null) {
+                rpcResult
+                        .setWithRpcResultCodeEnum(RpcResultCodeEnum.SERVICE_BEAN_NOT_FOUND_ERROR);
+            } else {
+                // 缓存dubbo reference
+                REFERENCECONFIG_CACHE.put(referenceCacheKey, reference);
+                if (objectMapper == null) {
+                    objectMapper = new ObjectMapper();
+
+                }
+                List<?> parameters = objectMapper.readValue(rpcContext
+                        .getRpcRequest().getParameters(), ArrayList.class);
+                // 基本类型以及Date,List,Map等不需要转换，直接调用
+                Object result = genericService.$invoke(
+                        rpcContext.getMethodName(), null, parameters.toArray());
+                rpcResult
+                        .setWithRpcResultCodeEnum(RpcResultCodeEnum.SUCCESS);
+                rpcResult.setData(result);
+            }
+
+        } catch (Exception e) {
             logger.error("{}", rpcContext);
             logger.error("{}", e);
             String messageString = e.getMessage();
@@ -101,11 +121,9 @@ public class DubboGenericServiceInvoker implements RpcInvoker {
             }
 
 
-		}
+        }
 
-        System.out.println(new Date());
-
-	}
+    }
 
     public static Map<String, String> buildValidationResult(String messageString) {
         Map<String, String> vaidationResultMap = new HashMap<String, String>();

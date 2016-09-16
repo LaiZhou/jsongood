@@ -30,7 +30,7 @@
 							$
 									.ajaxJSONP({
 
-										url : 'http://localhost:8080/api?callback=?',
+										url : './api?callback=?',
 										data : {
 											'content' : JSON
 													.stringify({
@@ -63,13 +63,13 @@
 										data : JSON
 												.stringify({
 													methodEndPoint : 'com.github.jessyZu.jsongood.demo.api.DemoService:sayHello2:1.0.0',
-													parameters : [ "123",
+													parameters : [ "12345",
 															"1234" ]
 												}),
 
 										contentType : 'application/json; charset=utf-8',
 										dataType : 'json',
-										timeout : 300,
+										timeout : 3000,
 										success : function(data) {
 											alert(JSON.stringify(data));
 											console.log(data);

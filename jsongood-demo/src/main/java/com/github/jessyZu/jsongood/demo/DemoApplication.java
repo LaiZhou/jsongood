@@ -1,12 +1,6 @@
 package com.github.jessyZu.jsongood.demo;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.github.jessyZu.jsongood.servlet.ServletRpcServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,12 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import com.github.jessyZu.jsongood.servlet.ServletRpcServer;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SpringBootApplication
 @Controller
-@ImportResource(locations = { "classpath:applicationContext.xml" })
-//@ImportResource(locations = { "classpath:applicationContext-dubbo.xml" })
+//@ImportResource(locations = { "classpath:applicationContext.xml" })
+@ImportResource(locations = { "classpath:applicationContext-dubbo.xml" })
 public class DemoApplication extends SpringBootServletInitializer {
 
     @Autowired
