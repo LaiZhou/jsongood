@@ -3,59 +3,28 @@
  */
 package com.github.jessyZu.jsongood.core;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtField;
-import javassist.CtNewConstructor;
-import javassist.Modifier;
-import javassist.NotFoundException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.jessyZu.jsongood.util.ClassGenerator;
+import javassist.*;
 import javassist.bytecode.AnnotationsAttribute;
 import javassist.bytecode.ClassFile;
 import javassist.bytecode.ConstPool;
-import javassist.bytecode.annotation.ArrayMemberValue;
-import javassist.bytecode.annotation.BooleanMemberValue;
-import javassist.bytecode.annotation.ByteMemberValue;
-import javassist.bytecode.annotation.CharMemberValue;
-import javassist.bytecode.annotation.ClassMemberValue;
-import javassist.bytecode.annotation.DoubleMemberValue;
-import javassist.bytecode.annotation.EnumMemberValue;
-import javassist.bytecode.annotation.FloatMemberValue;
-import javassist.bytecode.annotation.IntegerMemberValue;
-import javassist.bytecode.annotation.LongMemberValue;
-import javassist.bytecode.annotation.MemberValue;
-import javassist.bytecode.annotation.ShortMemberValue;
-import javassist.bytecode.annotation.StringMemberValue;
-
-import javax.validation.Constraint;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.groups.Default;
-
+import javassist.bytecode.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.ResolvableType;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jessyZu.jsongood.util.ClassGenerator;
+import javax.validation.*;
+import javax.validation.groups.Default;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class LocalBeanServiceInvoker implements RpcInvoker, ApplicationContextAware {
     private static final Logger logger = LoggerFactory.getLogger(LocalBeanServiceInvoker.class);
@@ -120,7 +89,7 @@ public class LocalBeanServiceInvoker implements RpcInvoker, ApplicationContextAw
                                     .newInstance();
                             if (collection.size() > 0) {
                                 for (Object elementObject : collection) {
-                                    if (elementObject != null && elementObject instanceof Map) {
+                                    if (elementObject != null) {
                                         ResolvableType type = ResolvableType.forMethodParameter(m, i);
                                         if (type.getGenerics().length == 1) {
                                             Class<?> elementClass = type.getGeneric(0).getRawClass();
