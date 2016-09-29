@@ -4,7 +4,7 @@
 ![img1](./img1.png)
 
 
-###jsongood是一个简单可扩展网关框架，支持客户端透明地调用服务端接口，可以在此基础上方便地实现一套微服务网关架构。
+###jsongood是一个简单可扩展的API网关框架，支持客户端透明地调用服务端接口(基于JSON序列化)，可以在此基础上方便地实现一套微服务网关架构。
 ##网关目前已有功能:
 * 可反射调用本地spring bean;
 * 可泛化调用远程dubbo service bean;
@@ -12,6 +12,11 @@
 * 支持自定义Filter，完成业务上的安全验证、协议转换、访问控制、会话管理等需求；
 * 目前API暴露方式支持Servlet，见ServletRpcServer，当然也可方便扩展至其他通讯架构比如websocket，如需扩展参考DefaultRpcServiceHandler
 
+##未来计划增加的功能
+* 提供类似trift和pb的IDL代码生成器，基于json scheme来生成不同端上的接口代码，方便更加透明地调用api;
+* 提供其他通讯模块集成，比如websocket，socketio等，保持客户端长连接能大幅优化调用开销；
+* 集成zipkin框架，追踪全链路调用数据
+* 提供ios或者其他语言的调用库
 
 ##服务端使用方式
 
