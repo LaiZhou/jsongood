@@ -64,6 +64,15 @@
 参考[https://github.com/jessyZu/jsongood-android-client/blob/master/jsongood-android/src/androidTest/java/com/github/jessyzu/jsongood/RpcManagerTests.java](https://github.com/jessyZu/jsongood-android-client/blob/master/jsongood-android/src/androidTest/java/com/github/jessyzu/jsongood/RpcManagerTests.java)
 
 ```
+<dependency>
+    <groupId>com.github.jessyZu</groupId>
+    <artifactId>jsongood-android</artifactId>
+    <version>1.0.1</version>
+</dependency>
+
+```
+
+```
   manager.invoke("com.github.jessyZu.jsongood.demo.api.DemoService:sayHello1:1.0.0", new Object[]{p1, p2, new Param[]{p1, null}}, new RpcCallback() {
             @Override
             public void success(RpcResult result) {
