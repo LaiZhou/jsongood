@@ -13,7 +13,7 @@
 * 目前API暴露方式支持Servlet，见ServletRpcServer，当然也可方便扩展至其他通讯架构比如websocket，如需扩展参考DefaultRpcServiceHandler
 
 ##未来计划增加的功能
-* 提供类似trift和pb的IDL代码生成器，基于json scheme来生成不同端上的接口代码，方便更加透明地调用api;
+* 提供类似thrift和pb的IDL代码生成器，基于json scheme来生成不同端上的接口代码，方便更加透明地调用api;
 * 提供其他通讯模块集成，比如websocket，socketio等，保持客户端长连接能大幅优化调用开销；
 * 集成zipkin框架，追踪全链路调用数据
 * 提供ios或者其他语言的调用库
