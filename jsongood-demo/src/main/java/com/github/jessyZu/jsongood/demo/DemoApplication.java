@@ -20,8 +20,8 @@ import java.util.concurrent.Executors;
 
 @SpringBootApplication
 @Controller
-//@ImportResource(locations = { "classpath:applicationContext.xml" })
-@ImportResource(locations = { "classpath:applicationContext-dubbo.xml" })
+@ImportResource(locations = { "classpath:applicationContext.xml" })
+//@ImportResource(locations = { "classpath:applicationContext-dubbo.xml" })
 public class DemoApplication extends SpringBootServletInitializer {
 
     @Autowired
