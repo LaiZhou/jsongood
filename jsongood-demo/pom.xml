@@ -129,6 +129,15 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				  <groupId>com.github.jessyZu</groupId>
+   				  <artifactId>jessy-maven-plugin</artifactId>
+    			  <version>1.0.0-SNAPSHOT</version>
+					<configuration>
+						<iosPrefix>JZ</iosPrefix>
+					</configuration>
+			</plugin>
 		</plugins>
 
 	</build>

@@ -49,11 +49,11 @@ public class RpcResult implements Serializable {
 		this.data = data;
 	}
 
-    public boolean getSuccess() {
+    public boolean isSuccess() {
         return this.code == RpcResultCodeEnum.SUCCESS.getCode();
     }
 
-    public boolean getValid() {
+    public boolean isValid() {
         return this.code != RpcResultCodeEnum.VALIDATION_ERROR.getCode();
     }
 	@Override

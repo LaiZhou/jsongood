@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Param {
+public class Param  extends BaseParam{
 
 	private int intParam;
 	private double doubleParam;
