@@ -8,15 +8,14 @@
 ##网关目前已有功能:
 * 可反射调用本地spring bean;
 * 可泛化调用远程dubbo service bean;
-* RPC模块支持基于声明式validation
+* RPC模块支持基于声明式validation验证
 * 支持自定义Filter，完成业务上的安全验证、协议转换、访问控制、会话管理等需求；
-* 目前API暴露方式支持Servlet，见ServletRpcServer，当然也可方便扩展至其他通讯架构比如websocket，如需扩展参考DefaultRpcServiceHandler
+* 目前API暴露方式支持Servlet，见ServletRpcServer，当然也可方便扩展至其他通讯架构比如websocket
 
 ##未来计划增加的功能
-* 提供类似thrift和pb的IDL代码生成器，基于json scheme来生成不同端上的接口代码，方便更加透明地调用api;
+* IDL CODE生成：提供maven插件，支持从java代码来生成不同客户端的代码
 * 提供其他通讯模块集成，比如websocket，socketio等，保持客户端长连接能大幅优化调用开销；
 * 集成zipkin框架，追踪全链路调用数据
-* 提供ios或者其他语言的调用库
 
 ##服务端使用方式
 
@@ -27,7 +26,7 @@
         <dependency>
             <groupId>com.github.jessyZu</groupId>
             <artifactId>jsongood-servlet</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
         </dependency>
 
   <!-- validation 可选 -->
@@ -58,10 +57,13 @@
 ##客户端调用方式
 
 ###JSON以及JSONP请求
-参考[https://github.com/jessyZu/jsongood/blob/master/jsongood-demo/src/main/resources/static/test.htm](https://github.com/jessyZu/jsongood/blob/master/jsongood-demo/src/main/resources/static/test.htm)
+调用代码参考
+
+[https://github.com/jessyZu/jsongood/blob/master/jsongood-demo/src/main/resources/static/test.htm](https://github.com/jessyZu/jsongood/blob/master/jsongood-demo/src/main/resources/static/test.htm)
 
 ###android客户端请求
-参考[https://github.com/jessyZu/jsongood-android-client/blob/master/jsongood-android/src/androidTest/java/com/github/jessyzu/jsongood/RpcManagerTests.java](https://github.com/jessyZu/jsongood-android-client/blob/master/jsongood-android/src/androidTest/java/com/github/jessyzu/jsongood/RpcManagerTests.java)
+
+引入依赖
 
 ```
 <dependency>
@@ -71,6 +73,11 @@
 </dependency>
 
 ```
+* 注意:jsongood-android会间接依赖okhttp做网络请求
+
+调用代码参考
+
+[https://github.com/jessyZu/jsongood-android-client/blob/master/jsongood-android/src/androidTest/java/com/github/jessyzu/jsongood/RpcManagerTests.java](https://github.com/jessyZu/jsongood-android-client/blob/master/jsongood-android/src/androidTest/java/com/github/jessyzu/jsongood/RpcManagerTests.java)
 
 ```
   manager.invoke("com.github.jessyZu.jsongood.demo.api.DemoService:sayHello1:1.0.0", new Object[]{p1, p2, new Param[]{p1, null}}, new RpcCallback() {
@@ -95,5 +102,25 @@
 ```
 
 ###IOS客户端请求
-后续有时间会提供pod出来，目前不想维护oc版本，直接上swift吧
+
+引入依赖
+
+```
+    pod 'JsonGood', :git => 'https://github.com/jessyZu/JsonGoodIOS.git', :branch=>'master'
+
+```
+* 注意:JsonGood会间接依赖AFNetworking做网络请求
+
+调用代码参考
+
+[https://github.com/jessyZu/jsongood-ios-client/blob/master/JsonGoodDemo/JsonGoodDemoTests/JsonGoodDemoTests.m](https://github.com/jessyZu/jsongood-ios-client/blob/master/JsonGoodDemo/JsonGoodDemoTests/JsonGoodDemoTests.m)
+
+
+##更新说明
+2016.11.16
+
+服务端发布1.0.2版本,变更:
+
+* 优化: 对于dubbo 远程泛化调用场景，在网关初始化时，主动与dubbo注册中心建立长连接,而不是在第一次泛化调用时;
+* 优化+fixBug: 对网关的本地spring bean调用进行类型转换增强，借鉴dubbo泛化调用PojoUtils.java从弱类型转化为强类型；
 
