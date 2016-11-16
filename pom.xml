@@ -43,8 +43,8 @@
 		<module>jsongood-core</module>
 		<module>jsongood-servlet</module>
 		<module>jsongood-dubbo</module>
-		<!--demo -->
-		<module>jsongood-demo</module> 
+		<!--demo
+		<module>jsongood-demo</module> -->
 
 	</modules>
 
