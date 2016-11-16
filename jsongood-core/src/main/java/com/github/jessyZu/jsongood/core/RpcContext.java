@@ -3,9 +3,6 @@
  */
 package com.github.jessyZu.jsongood.core;
 
-import java.util.Map;
-
-
 public class RpcContext {
 
     private static final ThreadLocal<RpcContext> LOCAL = new ThreadLocal<RpcContext>() {
@@ -37,8 +34,6 @@ public class RpcContext {
     private String methodName;
     private String serviceVersion;
 
-
-    private Map<String, String> attachments;
 
     public String getClassName() {
         return className;
@@ -91,8 +86,7 @@ public class RpcContext {
                 + (jsonpCallback != null ? "jsonpCallback=" + jsonpCallback + ", " : "")
                 + (className != null ? "className=" + className + ", " : "")
                 + (methodName != null ? "methodName=" + methodName + ", " : "")
-                + (serviceVersion != null ? "serviceVersion=" + serviceVersion + ", " : "")
-                + (attachments != null ? "attachments=" + attachments : "") + "]";
+                + (serviceVersion != null ? "serviceVersion=" + serviceVersion + ", " : "");
     }
 
 }
