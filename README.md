@@ -1,23 +1,23 @@
-#轻量级的微服务网关jsongood
+# 轻量级的微服务网关jsongood
 简单地，上图说明这个轮子的作用:
 
 ![img1](./img1.png)
 
 
-###jsongood是一个简单可扩展的API网关框架，支持客户端透明地调用服务端接口(基于JSON序列化)，可以在此基础上方便地实现一套微服务网关架构。
-##网关目前已有功能:
+### jsongood是一个简单可扩展的API网关框架，支持客户端透明地调用服务端接口(基于JSON序列化)，可以在此基础上方便地实现一套微服务网关架构。
+## 网关目前已有功能:
 * 可反射调用本地spring bean;
 * 可泛化调用远程dubbo service bean;
 * RPC模块支持基于声明式validation验证
 * 支持自定义Filter，完成业务上的安全验证、协议转换、访问控制、会话管理等需求；
 * 目前API暴露方式支持Servlet，见ServletRpcServer，当然也可方便扩展至其他通讯架构比如websocket
 
-##未来计划增加的功能
+## 未来计划增加的功能
 * IDL CODE生成：提供maven插件，支持从java代码来生成不同客户端的代码
 * 提供其他通讯模块集成，比如websocket，socketio等，保持客户端长连接能大幅优化调用开销；
 * 集成zipkin框架，追踪全链路调用数据
 
-##服务端使用方式
+## 服务端使用方式
 
 ```
 
@@ -54,14 +54,14 @@
 ```
 
 
-##客户端调用方式
+## 客户端调用方式
 
-###JSON以及JSONP请求
+### JSON以及JSONP请求
 调用代码参考
 
 [https://github.com/jessyZu/jsongood/blob/master/jsongood-demo/src/main/resources/static/test.htm](https://github.com/jessyZu/jsongood/blob/master/jsongood-demo/src/main/resources/static/test.htm)
 
-###android客户端请求
+### android客户端请求
 
 引入依赖
 
@@ -101,7 +101,7 @@
 
 ```
 
-###IOS客户端请求
+### IOS客户端请求
 
 引入依赖
 
@@ -116,7 +116,7 @@
 [https://github.com/jessyZu/jsongood-ios-client/blob/master/JsonGoodDemo/JsonGoodDemoTests/JsonGoodDemoTests.m](https://github.com/jessyZu/jsongood-ios-client/blob/master/JsonGoodDemo/JsonGoodDemoTests/JsonGoodDemoTests.m)
 
 
-##更新说明
+## 更新说明
 2016.11.16
 
 服务端发布1.0.2版本,变更:
